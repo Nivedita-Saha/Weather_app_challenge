@@ -83,8 +83,8 @@ http://localhost:8080/api/weather/rain-check?city1=London&city2=Liverpool
 
 Below are the available API endpoints and their functionalities:
 
-| **Endpoint**                     | **Method** | **Description**                            |
-|-----------------------------------|-----------|--------------------------------------------|
+| **Endpoint**                      | **Method** | **Description**                            |
+|------------------------------------|-----------|--------------------------------------------|
 | `/api/weather/`                   | `GET`     | Root message                              |
 | `/api/weather/forecast/{city}`     | `GET`     | Get weather forecast for a city           |
 | `/api/weather/compare-daylight`    | `GET`     | Compare daylight between two cities       |
