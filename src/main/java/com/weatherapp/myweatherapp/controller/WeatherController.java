@@ -4,26 +4,39 @@ import com.weatherapp.myweatherapp.model.CityInfo;
 import com.weatherapp.myweatherapp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/api/weather")
 public class WeatherController {
 
-  @Autowired
-  WeatherService weatherService;
+    @Autowired
+    private WeatherService weatherService;
 
-  @GetMapping("/forecast/{city}")
-  public ResponseEntity<CityInfo> forecastByCity(@PathVariable("city") String city) {
+    // Root endpoint to avoid 404 errors when accessing http://localhost:8080/api/weather/
+    @GetMapping("/")
+    public ResponseEntity<String> home() {
+        return ResponseEntity.ok("Welcome to the Weather API! Try /api/weather/forecast/London");
+    }
 
-    CityInfo ci = weatherService.forecastByCity(city);
+    // Get weather forecast for a city
+    @GetMapping("/forecast/{city}")
+    public ResponseEntity<CityInfo> forecastByCity(@PathVariable("city") String city) {
+        CityInfo cityInfo = weatherService.forecastByCity(city);
+        return ResponseEntity.ok(cityInfo);
+    }
 
-    return ResponseEntity.ok(ci);
-  }
+    // Compare daylight hours between two cities
+    @GetMapping("/compare-daylight")
+    public ResponseEntity<String> compareDaylight(@RequestParam String city1, @RequestParam String city2) {
+        String result = weatherService.compareDaylightHours(city1, city2);
+        return ResponseEntity.ok(result);
+    }
 
-  // TODO: given two city names, compare the length of the daylight hours and return the city with the longest day
-
-  // TODO: given two city names, check which city its currently raining in
-
+    // Check which city is currently raining
+    @GetMapping("/rain-check")
+    public ResponseEntity<String> checkRain(@RequestParam String city1, @RequestParam String city2) {
+        String result = weatherService.checkRainCondition(city1, city2);
+        return ResponseEntity.ok(result);
+    }
 }
